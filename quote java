@@ -1,0 +1,26 @@
+document.addEventListener('DOMContentLoaded', () => {
+    fetch('/api/pricelist')
+        .then(response => response.json())
+        .then(data => {
+            const itemsContainer = document.getElementById('itemsContainer');
+            data.forEach(item => {
+                const div = document.createElement('div');
+                div.innerHTML = `
+                    <input type="checkbox" id="item${item.ItemID}" name="item" value="${item.ItemID}">
+                    <label for="item${item.ItemID}">${item.ItemName} - ${item.Price} ${item.Currency}</label>
+                `;
+                itemsContainer.appendChild(div);
+            });
+        });
+
+    document.getElementById('quoteForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const checkboxes = document.querySelectorAll('input[name="item"]:checked');
+        let total = 0;
+        checkboxes.forEach(checkbox => {
+            const price = parseFloat(checkbox.nextElementSibling.textContent.split(' - ')[1].split(' ')[0]);
+            total += price;
+        });
+        document.getElementById('quoteResult').innerText = `Total Quote: ${total.toFixed(2)} USD`;
+    });
+});
