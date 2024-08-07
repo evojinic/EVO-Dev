@@ -2,3 +2,28 @@ mkdir customer-management
 cd customer-management
 npm init -y
 npm install express body-parser mysql2 jsonwebtoken bcrypt
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/api/pending-enquiries') // Replace with your API endpoint
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.getElementById('pendingEnquiries');
+            data.forEach(enquiry => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${enquiry.id}</td>
+                    <td>${enquiry.companyName}</td>
+                    <td>${enquiry.contact}</td>
+                    <td>${enquiry.details}</td>
+                    <td>${new Date(enquiry.receivedOn).toLocaleDateString()}</td>
+                    <td><button onclick="allocateEnquiry(${enquiry.id})">Allocate</button></td>
+                `;
+                tableBody.appendChild(row);
+            });
+        })
+        .catch(error => console.error('Error fetching enquiries:', error));
+});
+
+function allocateEnquiry(enquiryId) {
+    // Implement the logic to allocate the enquiry, possibly making another API call
+    console.log('Allocating enquiry with ID:', enquiryId);
+}
