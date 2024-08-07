@@ -1,0 +1,10 @@
+CREATE TABLE Quotes (
+    QuoteID INT PRIMARY KEY AUTO_INCREMENT,
+    CompanyID INT,
+    UserID INT, -- Creator of the quote
+    QuoteDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    Status VARCHAR(50), -- e.g., Draft, Submitted, Approved, Rejected
+    TotalAmount DECIMAL(15, 2),
+    CONSTRAINT FK_QuoteCompany FOREIGN KEY (CompanyID) REFERENCES Companies(CompanyID),
+    CONSTRAINT FK_QuoteUser FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);
