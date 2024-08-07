@@ -1,0 +1,18 @@
+const fs = require('fs');
+const path = require('path');
+
+// Function to process enquiry data
+function processEnquiryData(rawText) {
+    // Implement your logic to structure the data
+    let structuredData = {
+        // Example fields
+        customerName: '',
+        enquiryDetails: '',
+        date: new Date()
+    };
+
+    // Save to file
+    let filePath = path.join(__dirname, 'enquiries', `${structuredData.customerName}_${Date.now()}.json`);
+    fs.writeFileSync(filePath, JSON.stringify(structuredData, null, 2));
+    return filePath;
+}

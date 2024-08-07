@@ -1,0 +1,39 @@
+import React, { useState } from 'react';
+
+const EnquiryForm = () => {
+    const [customerID, setCustomerID] = useState('');
+    const [enquiryText, setEnquiryText] = useState('');
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response = await fetch('/submit-enquiry', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ CustomerID: customerID, EnquiryText: enquiryText }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                alert(`Enquiry submitted successfully. Reference Code: ${data.ReferenceCode}`);
+            } else {
+                alert('Failed to submit enquiry');
+            }
+        } catch (error) {
+            console.error('Error submitting enquiry:', error);
+        }
+    };
+
+    return (
+        <form onSubmit={handleSubmit}>
+            <input type="text" value={customerID} onChange={(e) => setCustomerID(e.target.value)} placeholder="Customer ID" />
+            <textarea value={enquiryText} onChange={(e) => setEnquiryText(e.target.value)} placeholder="Enquiry Text" />
+            <button type="submit">Submit Enquiry</button>
+        </form>
+    );
+};
+
+export default EnquiryForm;

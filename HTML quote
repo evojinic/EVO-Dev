@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quote Generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Quote Generator</h1>
+        <form id="quoteForm">
+            <div id="itemsContainer"></div>
+            <button type="submit">Generate Quote</button>
+        </form>
+        <div id="quoteResult"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

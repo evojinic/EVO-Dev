@@ -1,0 +1,7 @@
+CREATE TABLE Contracts (
+    ContractID INT PRIMARY KEY AUTO_INCREMENT,
+    OrderID INT,
+    ContractDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    ReviewStatus VARCHAR(50), -- e.g., Pending, Reviewed, Approved
+    CONSTRAINT FK_ContractOrder FOREIGN KEY (OrderID) REFERENCES Orders(OrderID)
+);

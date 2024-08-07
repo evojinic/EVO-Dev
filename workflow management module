@@ -1,0 +1,13 @@
+const { Company_Users } = require('./models'); // Assuming you have a models file
+
+// Function to assign task to marketing team
+async function assignTask(enquiryFile) {
+    // Find marketing team members
+    let marketingTeam = await Company_Users.findAll({ where: { Role: 'Marketing' } });
+
+    // Assign task to each member
+    marketingTeam.forEach(member => {
+        // Implement your logic to notify or assign tasks
+        console.log(`Task assigned to ${member.UserID}`);
+    });
+}

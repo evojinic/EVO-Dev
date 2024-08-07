@@ -1,0 +1,12 @@
+{
+function createFileInDrive() 
+  var folderId ='Code Extract'
+  var fileName = 'MyNewFile.txt';https://script.google.com/d/1N8hoXXSVuIymlZz9pw5JyYHGLycI_mzomZQ0ShIoendx7TIRz8S-TkCv/edit?usp=drive_link
+  var fileContent = 'This is the content of my new file.';
+
+  // Create a new file in the specified folder
+  DriveApp.createFile(fileName, fileContent, folderId);
+  DriveApp.createFile ;
+  DriveApp . 
+  Logger.log('File created successfully!');
+}

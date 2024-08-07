@@ -1,0 +1,33 @@
+const express = require('express');
+const { v4: uuidv4 } = require('uuid'); // For generating unique reference codes
+const app = express();
+
+// Assuming db is your database connection setup
+
+app.post('/submit-enquiry', async (req, res) => {
+    const { CustomerID, EnquiryText } = req.body;
+    const ReferenceCode = uuidv4(); // Generate unique reference code
+
+    // Insert enquiry into the database
+    const enquiryQuery = `INSERT INTO Enquiries (CustomerID, EnquiryText, ReferenceCode) VALUES (?, ?, ?)`;
+    db.query(enquiryQuery, [CustomerID, EnquiryText, ReferenceCode], (err, result) => {
+        if (err) return res.status(500).send('Error submitting enquiry');
+
+        const EnquiryID = result.insertId;
+
+        // Notify sales managers and customer
+        const notificationQuery = `INSERT INTO Notifications (EnquiryID, RecipientID, NotificationText) VALUES (?, ?, ?)`;
+        const notifications = [
+            { EnquiryID, RecipientID: CustomerID, NotificationText: 'Your enquiry has been received.' },
+            // Add more notifications for sales managers
+        ];
+
+        notifications.forEach(notification => {
+            db.query(notificationQuery, [notification.EnquiryID, notification.RecipientID, notification.NotificationText]);
+        });
+
+        res.status(200).send({ message: 'Enquiry submitted successfully', ReferenceCode });
+    });
+});
+
+app.listen(3000, () => console.log('Server running on port 3000'));

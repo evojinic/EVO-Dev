@@ -1,0 +1,11 @@
+const mongoose = require('mongoose');
+
+const quoteSchema = new mongoose.Schema({
+    CompanyID: { type: mongoose.Schema.Types.ObjectId, ref: 'Company', required: true },
+    UserID: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    QuoteDate: { type: Date, default: Date.now },
+    Status: { type: String, default: 'Draft' },
+    TotalAmount: { type: Number, required: true }
+});
+
+module.exports = mongoose.model('Quote', quoteSchema);

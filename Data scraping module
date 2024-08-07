@@ -1,0 +1,84 @@
+const nodemailer = require('nodemailer');
+const pdfParse = require('pdf-parse');
+const fs = require('fs');
+
+// Function to read emails
+async function readEmails() {
+    let transporter = nodemailer.createTransport({
+        // Configure your email provider here
+    });
+
+    let inbox = await transporter.inbox.fetch();
+    inbox.messages.forEach(async (msg) => {
+        if (msg.attachments) {
+            for (let attachment of msg.attachments) {
+                if (attachment.contentType === 'application/pdf') {
+                    let dataBuffer = fs.readFileSync(attachment.path);
+                    let data = await pdfParse(dataBuffer);
+                    console.log(data.text); // Process the extracted text
+                }
+            }
+        }
+    });
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enquiry Allocation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        .enquiry-card {
+            background: #fff;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .enquiry-card h2 {
+            margin: 0 0 10px 0;
+        }
+        .enquiry-card p {
+            margin: 0;
+            color: #555;
+        }
+        .allocate-btn {
+            background: #28a745;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .allocate-btn:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pending Enquiries</h1>
+        <!-- Example Enquiry Card -->
+        <div class="enquiry-card">
+            <h2>Company Name</h2>
+            <p><strong>Contact:</strong> contact@company.com</p>
+            <p><strong>Date:</strong> 2023-10-01</p>
+            <button class="allocate-btn">Allocate</button>
+        </div>
+        <!-- Repeat for each enquiry -->
+    </div>
+</body>
+</html>
+

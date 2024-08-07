@@ -1,0 +1,7 @@
+CREATE TABLE PriceList (
+    ItemID INT PRIMARY KEY AUTO_INCREMENT,
+    ItemName VARCHAR(255) NOT NULL,
+    Description TEXT,
+    Price DECIMAL(10, 2) NOT NULL,
+    Currency VARCHAR(10) DEFAULT 'USD'
+);

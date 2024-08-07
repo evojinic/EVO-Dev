@@ -1,0 +1,113 @@
+CREATE TABLE Quotes (
+    QuoteID INT PRIMARY KEY AUTO_INCREMENT,
+    CompanyID INT,
+    UserID INT, -- Creator of the quote
+    QuoteDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    Status VARCHAR(50), -- e.g., Draft, Submitted, Approved, Rejected
+    TotalAmount DECIMAL(15, 2),
+    CONSTRAINT FK_QuoteCompany FOREIGN KEY (CompanyID) REFERENCES Companies(CompanyID),
+    CONSTRAINT FK_QuoteUser FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);const express = require('express');
+const mysql = require('mysql');
+const axios = require('axios');
+const app = express();
+
+// Database connection
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'user',
+    password: 'password',
+    database: 'database_name'
+});
+
+db.connect((err) => {
+    if (err) throw err;
+    console.log('Connected to database');
+});
+
+// Example route to fetch pending enquiries
+app.get('/enquiries', (req, res) => {
+    let sql = 'SELECT * FROM Enquiries WHERE Status = "Pending"';
+    db.query(sql, (err, results) => {
+        if (err) return res.status(500).send(err);
+        res.json(results);
+    });
+});
+
+// Example of a scraping function
+async function scrapeData() {
+    try {
+        const response = await axios.get('URL_TO_SCRAPE');
+        const data = response.data; // Process this data as needed
+        // Insert into database
+        let sql = 'INSERT INTO Enquiries SET ?';
+        db.query(sql, { CompanyName: data.name, Email: data.email }, (err, result) => {
+            if (err) throw err;
+            console.log('Enquiry added');
+        });
+    } catch (error) {
+        console.error('Scraping failed', error);
+    }
+}
+
+app.listen(3000, () => {
+    console.log('Server running on port 3000');
+});
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.dashboard {
+    width: 90%;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+header {
+    background: #4CAF50;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+
+h1, h2 {
+    margin: 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #f5f5f5;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+

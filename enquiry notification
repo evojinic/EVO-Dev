@@ -1,0 +1,21 @@
+-- Enquiries Table
+CREATE TABLE Enquiries (
+    EnquiryID INT PRIMARY KEY AUTO_INCREMENT,
+    CustomerID INT, -- Assuming a Customer table exists or this links to Users table
+    EnquiryText TEXT,
+    ReferenceCode VARCHAR(255) UNIQUE NOT NULL, -- Unique reference code
+    Status VARCHAR(50) DEFAULT 'Pending', -- e.g., Pending, Assigned, Resolved
+    CONSTRAINT FK_Customer FOREIGN KEY (CustomerID) REFERENCES Users(UserID)
+);
+
+-- Notifications Table
+CREATE TABLE Notifications (
+    NotificationID INT PRIMARY KEY AUTO_INCREMENT,
+    EnquiryID INT,
+    RecipientID INT, -- User or Sales Manager/Team ID
+    NotificationText TEXT,
+    SentDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    Status VARCHAR(50) DEFAULT 'Pending', -- e.g., Pending, Sent, Read
+    CONSTRAINT FK_Enquiry FOREIGN KEY (EnquiryID) REFERENCES Enquiries(EnquiryID),
+    CONSTRAINT FK_Recipient FOREIGN KEY (RecipientID) REFERENCES Users(UserID)
+);
