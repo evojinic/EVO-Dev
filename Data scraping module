@@ -1,0 +1,23 @@
+const nodemailer = require('nodemailer');
+const pdfParse = require('pdf-parse');
+const fs = require('fs');
+
+// Function to read emails
+async function readEmails() {
+    let transporter = nodemailer.createTransport({
+        // Configure your email provider here
+    });
+
+    let inbox = await transporter.inbox.fetch();
+    inbox.messages.forEach(async (msg) => {
+        if (msg.attachments) {
+            for (let attachment of msg.attachments) {
+                if (attachment.contentType === 'application/pdf') {
+                    let dataBuffer = fs.readFileSync(attachment.path);
+                    let data = await pdfParse(dataBuffer);
+                    console.log(data.text); // Process the extracted text
+                }
+            }
+        }
+    });
+}
