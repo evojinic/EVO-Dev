@@ -1,0 +1,29 @@
+const nodemailer = require('nodemailer');
+
+const sendNotificationEmail = (recipient, subject, message) => {
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'your_email@gmail.com',
+            pass: 'your_password'
+        }
+    });
+
+    const mailOptions = {
+        from: 'your_email@gmail.com',
+        to: recipient,
+        subject: subject,
+        text: message
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
+};
+
+// Call the function with recipient, subject, and message
+sendNotificationEmail('recipient_email@example.com', 'Quote Submitted', 'A new quote has been submitted.');
