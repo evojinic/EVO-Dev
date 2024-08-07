@@ -1,0 +1,12 @@
+CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY AUTO_INCREMENT,
+    QuoteID INT,
+    CompanyID INT,
+    UserID INT, -- Creator of the order
+    OrderDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    Status VARCHAR(50), -- e.g., Draft, Submitted, Processing, Completed
+    TotalAmount DECIMAL(15, 2),
+    CONSTRAINT FK_OrderQuote FOREIGN KEY (QuoteID) REFERENCES Quotes(QuoteID),
+    CONSTRAINT FK_OrderCompany FOREIGN KEY (CompanyID) REFERENCES Companies(CompanyID),
+    CONSTRAINT FK_OrderUser FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);
