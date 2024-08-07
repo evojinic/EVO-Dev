@@ -1,0 +1,12 @@
+const Quote = require('../models/Quote');
+
+exports.submitQuote = async (req, res) => {
+    try {
+        const quote = new Quote(req.body);
+        quote.Status = 'Submitted';
+        await quote.save();
+        res.status(200).json(quote);
+    } catch (error) {
+        res.status(500).json({ message: 'Error submitting quote', error });
+    }
+};
